@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  font-family: 'JetBrains Mono', monospace;
+  --color-linux-green: #00ff00;
+  --color-terminal-dark: #0d1117;
+  --color-terminal-gray: #21262d;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-terminal-dark);
+  color: #ffffff;
+}
