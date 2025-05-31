@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom'
-import { chapters } from '../shared/data/chapters'
+import { allChapters } from '../shared/data/chapters'
 
 const ChapterGrid = () => {
 
@@ -15,7 +15,7 @@ const ChapterGrid = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {chapters.map((chapter, index) => (
+          {allChapters.map((chapter, index) => (
             <Link
               key={chapter.id}
               to={`/chapter/${chapter.slug}`}

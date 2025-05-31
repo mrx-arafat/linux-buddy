@@ -60,10 +60,32 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center">
-          <p className="text-gray-400">
-            © 2024 LinuxBuddy. Built with ❤️ for the Linux community - FREE forever!
-          </p>
+        <div className="border-t border-gray-700 mt-8 pt-8">
+          {/* Developer Credit Section */}
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            {/* Copyright */}
+            <div className="text-center md:text-left">
+              <p className="text-gray-400">
+                © 2025 LinuxBuddy. Built with ❤️ for the Linux community - FREE forever!
+              </p>
+            </div>
+
+            {/* Developer Credit */}
+            <div className="flex items-center space-x-3">
+              <p className="text-gray-300 text-sm">
+                Made by
+              </p>
+              <a
+                href="https://github.com/mrx-arafat"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-green-400 transition-colors font-medium"
+                title="Visit GitHub Profile @mrx-arafat"
+              >
+                Easin Arafat
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

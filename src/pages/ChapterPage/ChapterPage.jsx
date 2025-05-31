@@ -1,10 +1,14 @@
 import { useParams, Link } from 'react-router-dom'
-import { getChapterBySlug } from '../../shared/data/chapters'
+import { getChapterBySlug, getNextChapter, getPreviousChapter } from '../../shared/data/chapters'
 import CodeBlock from '../../shared/ui/CodeBlock/CodeBlock'
 
 const ChapterPage = () => {
   const { slug } = useParams()
   const chapter = getChapterBySlug(slug)
+
+  // Get next and previous chapters for navigation
+  const nextChapter = chapter ? getNextChapter(chapter.id) : null
+  const previousChapter = chapter ? getPreviousChapter(chapter.id) : null
 
   if (!chapter) {
     return (
@@ -80,22 +84,58 @@ const ChapterPage = () => {
         </div>
 
         {/* Navigation */}
-        <div className="mt-12 flex justify-between items-center">
-          <Link 
-            to="/" 
-            className="bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-600 transition-colors"
-          >
-            ← All Chapters
-          </Link>
-          
+        <div className="mt-12">
+          {/* Chapter Navigation */}
+          <div className="flex justify-between items-center mb-8">
+            {previousChapter ? (
+              <Link
+                to={`/chapter/${previousChapter.slug}`}
+                className="flex items-center bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-600 transition-colors"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                <div className="text-left">
+                  <div className="text-sm text-gray-300">Previous</div>
+                  <div className="text-green-400">{previousChapter.id} {previousChapter.title}</div>
+                </div>
+              </Link>
+            ) : (
+              <div></div>
+            )}
+
+            {nextChapter ? (
+              <Link
+                to={`/chapter/${nextChapter.slug}`}
+                className="flex items-center bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-600 transition-colors"
+              >
+                <div className="text-right">
+                  <div className="text-sm text-gray-300">Next</div>
+                  <div className="text-green-400">{nextChapter.id} {nextChapter.title}</div>
+                </div>
+                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            ) : (
+              <div></div>
+            )}
+          </div>
+
+          {/* Back to All Chapters */}
           <div className="text-center">
-            <p className="text-gray-400 mb-2">Enjoying LinuxBuddy?</p>
-            <Link 
-              to="/" 
-              className="text-green-400 hover:text-green-300 transition-colors font-semibold"
+            <Link
+              to="/"
+              className="bg-green-400 text-black px-8 py-3 rounded-lg font-semibold hover:bg-green-300 transition-colors inline-flex items-center"
             >
-              Explore More Chapters
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+              View All Chapters
             </Link>
+            <p className="text-gray-400 mt-4">
+              Enjoying LinuxBuddy? Share it with fellow Linux enthusiasts! 🐧
+            </p>
           </div>
         </div>
       </div>
