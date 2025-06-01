@@ -1,6 +1,6 @@
 
 import { Link } from 'react-router-dom'
-import { allChapters } from '../shared/data/chapters'
+import { allChapters } from '../shared/data/all-chapters'
 
 const ChapterGrid = () => {
 

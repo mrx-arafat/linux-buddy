@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
-import { getChapterBySlug, getNextChapter, getPreviousChapter } from '../../shared/data/chapters'
+import { getChapterBySlug, getNextChapter, getPreviousChapter } from '../../shared/data/all-chapters'
 import CodeBlock from '../../shared/ui/CodeBlock/CodeBlock'
 
 const ChapterPage = () => {
