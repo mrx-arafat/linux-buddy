@@ -19,8 +19,22 @@ import { chapter17 } from './chapters/chapter-17.js'
 import { chapter18 } from './chapters/chapter-18.js'
 import { chapter19 } from './chapters/chapter-19.js'
 import { chapter20 } from './chapters/chapter-20.js'
+import { chapter21 } from './chapters/chapter-21.js'
+import { chapter22 } from './chapters/chapter-22.js'
+import { chapter23 } from './chapters/chapter-23.js'
+import { chapter24 } from './chapters/chapter-24.js'
+import { chapter25 } from './chapters/chapter-25.js'
+import { chapter26 } from './chapters/chapter-26.js'
+import { chapter27 } from './chapters/chapter-27.js'
+import { chapter28 } from './chapters/chapter-28.js'
+import { chapter29 } from './chapters/chapter-29.js'
+import { chapter30 } from './chapters/chapter-30.js'
+import { chapter31 } from './chapters/chapter-31.js'
+import { chapter32 } from './chapters/chapter-32.js'
+import { chapter33 } from './chapters/chapter-33.js'
+import { chapter34 } from './chapters/chapter-34.js'
 
-// Complete list of all 20 completed LinuxBuddy chapters
+// Complete list of all 34 LinuxBuddy chapters
 const allChaptersArray = [
   chapter1,
   chapter2,
@@ -41,7 +55,21 @@ const allChaptersArray = [
   chapter17,
   chapter18,
   chapter19,
-  chapter20
+  chapter20,
+  chapter21,
+  chapter22,
+  chapter23,
+  chapter24,
+  chapter25,
+  chapter26,
+  chapter27,
+  chapter28,
+  chapter29,
+  chapter30,
+  chapter31,
+  chapter32,
+  chapter33,
+  chapter34
 ]
 
 // Export the combined chapters array

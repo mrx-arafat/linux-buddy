@@ -10,7 +10,7 @@ const ChapterGrid = () => {
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-white mb-6">Course Chapters</h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            20 comprehensive chapters covering everything from Linux basics to advanced system administration
+            34 comprehensive chapters covering everything from Linux basics to advanced system administration
           </p>
         </div>
 
