@@ -1,7 +1,29 @@
 
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 const Header = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const handleGetFreeAccess = (e) => {
+    e.preventDefault()
+    if (location.pathname === '/') {
+      // Already on home page, just scroll
+      const chaptersSection = document.getElementById('chapters')
+      if (chaptersSection) {
+        chaptersSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    } else {
+      // Navigate to home then scroll
+      navigate('/')
+      setTimeout(() => {
+        const chaptersSection = document.getElementById('chapters')
+        if (chaptersSection) {
+          chaptersSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      }, 100)
+    }
+  }
   return (
     <header className="bg-gray-800 border-b border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,9 +46,13 @@ const Header = () => {
               Try Demo
             </a>
           </nav>
-          <button className="bg-green-400 text-black px-6 py-2 rounded-lg font-semibold hover:bg-green-300 transition-colors">
+          <a
+            href="/#chapters"
+            onClick={handleGetFreeAccess}
+            className="bg-green-400 text-black px-6 py-2 rounded-lg font-semibold hover:bg-green-300 transition-colors inline-block cursor-pointer"
+          >
             Get Free Access
-          </button>
+          </a>
         </div>
       </div>
     </header>

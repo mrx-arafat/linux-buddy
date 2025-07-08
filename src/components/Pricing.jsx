@@ -1,6 +1,13 @@
 
 
 const Pricing = () => {
+  const handleGetFreeAccess = (e) => {
+    e.preventDefault()
+    const chaptersSection = document.getElementById('chapters')
+    if (chaptersSection) {
+      chaptersSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
   return (
     <section id="pricing" className="py-20 bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,9 +61,13 @@ const Pricing = () => {
                 </li>
               </ul>
 
-              <button className="w-full bg-green-400 text-black py-4 rounded-lg text-lg font-semibold hover:bg-green-300 transition-colors">
+              <a
+                href="/#chapters"
+                onClick={handleGetFreeAccess}
+                className="w-full bg-green-400 text-black py-4 rounded-lg text-lg font-semibold hover:bg-green-300 transition-colors block text-center cursor-pointer"
+              >
                 🚀 Get FREE Access Now
-              </button>
+              </a>
             </div>
           </div>
 

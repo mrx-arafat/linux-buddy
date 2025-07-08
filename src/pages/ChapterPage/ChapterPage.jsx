@@ -1,11 +1,25 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { getChapterBySlug, getNextChapter, getPreviousChapter } from '../../shared/data/all-chapters'
 import CodeBlock from '../../shared/ui/CodeBlock/CodeBlock'
 import TableOfContents from '../../shared/ui/TableOfContents/TableOfContents'
 
 const ChapterPage = () => {
   const { slug } = useParams()
+  const navigate = useNavigate()
   const chapter = getChapterBySlug(slug)
+
+  // Handle navigation to chapters section
+  const handleBackToChapters = (e) => {
+    e.preventDefault()
+    navigate('/')
+    // Small delay to ensure navigation completes before scrolling
+    setTimeout(() => {
+      const chaptersSection = document.getElementById('chapters')
+      if (chaptersSection) {
+        chaptersSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }, 100)
+  }
 
   // Get next and previous chapters for navigation
   const nextChapter = chapter ? getNextChapter(chapter.id) : null
@@ -64,15 +78,16 @@ const ChapterPage = () => {
       <div className="max-w-none mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:pr-96 2xl:pl-12">
         {/* Header */}
         <div className="mb-16">
-          <Link
-            to="/"
-            className="inline-flex items-center text-green-400 hover:text-green-300 transition-all duration-200 mb-8 group"
+          <a
+            href="/#chapters"
+            onClick={handleBackToChapters}
+            className="inline-flex items-center text-green-400 hover:text-green-300 transition-all duration-200 mb-8 group cursor-pointer"
           >
             <svg className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             Back to Chapters
-          </Link>
+          </a>
 
           <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700">
             <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
@@ -207,15 +222,16 @@ const ChapterPage = () => {
 
           {/* Back to All Chapters */}
           <div className="text-center bg-gradient-to-r from-gray-800/50 to-gray-700/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-600">
-            <Link
-              to="/"
-              className="bg-gradient-to-r from-green-400 to-green-500 text-black px-10 py-4 rounded-xl font-bold hover:from-green-300 hover:to-green-400 transition-all duration-300 inline-flex items-center text-lg shadow-lg hover:shadow-xl hover:scale-105"
+            <a
+              href="/#chapters"
+              onClick={handleBackToChapters}
+              className="bg-gradient-to-r from-green-400 to-green-500 text-black px-10 py-4 rounded-xl font-bold hover:from-green-300 hover:to-green-400 transition-all duration-300 inline-flex items-center text-lg shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer"
             >
               <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
               View All Chapters
-            </Link>
+            </a>
             <p className="text-gray-400 mt-6 text-lg">
               Enjoying LinuxBuddy? Share it with fellow Linux enthusiasts! 🐧
             </p>

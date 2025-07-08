@@ -1,6 +1,13 @@
 
 
 const Hero = () => {
+  const handleStartLearning = (e) => {
+    e.preventDefault()
+    const chaptersSection = document.getElementById('chapters')
+    if (chaptersSection) {
+      chaptersSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
   return (
     <section className="bg-gradient-to-br from-gray-900 to-gray-800 py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,12 +33,19 @@ const Hero = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <button className="bg-green-400 text-black px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-300 transition-colors">
+            <a
+              href="/#chapters"
+              onClick={handleStartLearning}
+              className="bg-green-400 text-black px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-300 transition-colors inline-block cursor-pointer"
+            >
               🚀 Start Learning FREE
-            </button>
-            <button className="border-2 border-green-400 text-green-400 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-400 hover:text-black transition-colors">
+            </a>
+            <a
+              href="/#demo"
+              className="border-2 border-green-400 text-green-400 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-400 hover:text-black transition-colors inline-block"
+            >
               📺 Watch Demo
-            </button>
+            </a>
           </div>
 
           <div className="bg-gray-800 rounded-lg p-6 max-w-2xl mx-auto">

@@ -55,7 +55,7 @@ const ChapterGrid = () => {
               <div>
                 <div className="text-3xl mb-2">📅</div>
                 <h4 className="text-green-400 font-semibold mb-2">Last Updated</h4>
-                <p className="text-gray-300">July 1st, 2024 - Ubuntu 24.04 LTS</p>
+                <p className="text-gray-300">July 10th, 2025 - Ubuntu 24.04 LTS</p>
               </div>
               <div>
                 <div className="text-3xl mb-2">⚡</div>
