@@ -1,7 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const CodeBlock = ({ code, language = 'bash' }) => {
   const [copied, setCopied] = useState(false)
+  const [copiedLine, setCopiedLine] = useState(null)
+  const [showSyntaxGuide, setShowSyntaxGuide] = useState(false)
+  const syntaxGuideTimerRef = useRef(null)
 
   const copyToClipboard = async () => {
     try {
@@ -10,6 +13,52 @@ const CodeBlock = ({ code, language = 'bash' }) => {
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
       console.error('Failed to copy code:', err)
+    }
+  }
+
+  const extractCommand = (line) => {
+    // Remove leading/trailing whitespace
+    let cleanLine = line.trim()
+
+    // Remove inline comments (everything after # that's not at the start)
+    if (!cleanLine.startsWith('#')) {
+      const commentIndex = cleanLine.indexOf(' #')
+      if (commentIndex > 0) {
+        cleanLine = cleanLine.substring(0, commentIndex).trim()
+      }
+    }
+
+    // Remove quotes around comments like "Copy file to new name"
+    cleanLine = cleanLine.replace(/\s*"[^"]*"$/g, '').trim()
+
+    return cleanLine
+  }
+
+  const copyLineToClipboard = async (line, lineNumber, event, isComment = false) => {
+    try {
+      // Don't copy comments
+      if (isComment) return
+
+      // Extract only the command part
+      const commandOnly = extractCommand(line)
+
+      // Don't copy empty lines
+      if (!commandOnly) return
+
+      await navigator.clipboard.writeText(commandOnly)
+      setCopiedLine(lineNumber)
+
+      // Add ripple effect
+      const target = event.currentTarget
+      target.classList.add('ripple-effect')
+      setTimeout(() => {
+        target.classList.remove('ripple-effect')
+      }, 600)
+
+      // Show copied feedback for only 1 second
+      setTimeout(() => setCopiedLine(null), 1000)
+    } catch (err) {
+      console.error('Failed to copy line: ', err)
     }
   }
 
@@ -32,7 +81,11 @@ const CodeBlock = ({ code, language = 'bash' }) => {
     // Comment lines (starting with #)
     if (trimmedLine.startsWith('#')) {
       return (
-        <div key={lineNumber} className="flex min-w-0">
+        <div
+          key={lineNumber}
+          className="flex min-w-0 transition-all duration-200 rounded px-2 -mx-2 relative hover:bg-gray-800/50"
+          title="Comments are not copyable"
+        >
           <span className="text-gray-500 select-none mr-4 text-xs leading-7 font-mono w-10 text-right flex-shrink-0">
             {lineNumber}
           </span>
@@ -83,8 +136,19 @@ const CodeBlock = ({ code, language = 'bash' }) => {
       )
     }
 
+    const isLineCopied = copiedLine === lineNumber
+
     return (
-      <div key={lineNumber} className="flex group hover:bg-gray-800 hover:bg-opacity-50 rounded px-2 -mx-2 min-w-0">
+      <div
+        key={lineNumber}
+        className={`flex group cursor-pointer transition-all duration-200 rounded px-2 -mx-2 min-w-0 relative
+          ${isLineCopied
+            ? 'bg-green-400/20 border-l-4 border-green-400 transform scale-[1.02]'
+            : 'hover:bg-gray-800/50 hover:border-l-4 hover:border-blue-500'
+          }`}
+        onDoubleClick={(e) => copyLineToClipboard(line, lineNumber, e, false)}
+        title="Double-click to copy command (without comments)"
+      >
         <span className="text-gray-500 select-none mr-4 text-xs leading-7 font-mono w-10 text-right flex-shrink-0">
           {lineNumber}
         </span>
@@ -92,6 +156,14 @@ const CodeBlock = ({ code, language = 'bash' }) => {
           {commandIcon}
           <span className="font-mono whitespace-pre-wrap break-all">{line}</span>
         </span>
+        {isLineCopied && (
+          <div className="absolute right-2 top-1/2 flex items-center space-x-1 bg-green-400 text-black px-3 py-1.5 rounded-full text-xs font-bold shadow-lg copy-success-animation">
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Copied!</span>
+          </div>
+        )}
       </div>
     )
   }
@@ -99,11 +171,43 @@ const CodeBlock = ({ code, language = 'bash' }) => {
   const codeLines = code.split('\n')
   const parsedLines = codeLines.map((line, index) => parseCodeLine(line, index + 1))
 
+  // Handle syntax guide visibility
+  const handleHeaderHover = () => {
+    setShowSyntaxGuide(true)
+
+    // Clear any existing timer
+    if (syntaxGuideTimerRef.current) {
+      clearTimeout(syntaxGuideTimerRef.current)
+    }
+
+    // Hide after 3 seconds
+    syntaxGuideTimerRef.current = setTimeout(() => {
+      setShowSyntaxGuide(false)
+    }, 3000)
+  }
+
+  const handleHeaderLeave = () => {
+    // Keep showing for 3 seconds even after mouse leaves
+  }
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (syntaxGuideTimerRef.current) {
+        clearTimeout(syntaxGuideTimerRef.current)
+      }
+    }
+  }, [])
+
   return (
     <div className="relative group">
       <div className="bg-gray-900 rounded-lg border border-gray-600 overflow-hidden shadow-lg">
         {/* Header */}
-        <div className="flex items-center justify-between bg-gray-800 px-4 py-3 border-b border-gray-600">
+        <div
+          className="flex items-center justify-between bg-gray-800 px-4 py-3 border-b border-gray-600"
+          onMouseEnter={handleHeaderHover}
+          onMouseLeave={handleHeaderLeave}
+        >
           <div className="flex items-center space-x-3">
             {/* Terminal window controls */}
             <div className="flex space-x-1.5">
@@ -115,6 +219,8 @@ const CodeBlock = ({ code, language = 'bash' }) => {
               <span className="text-gray-400 text-sm font-mono">{language}</span>
               <div className="w-1 h-1 bg-gray-500 rounded-full"></div>
               <span className="text-gray-500 text-xs">{codeLines.length} lines</span>
+              <div className="w-1 h-1 bg-gray-500 rounded-full"></div>
+              <span className="text-gray-500 text-xs">💡 Double-click any line to copy</span>
             </div>
           </div>
 
@@ -151,8 +257,10 @@ const CodeBlock = ({ code, language = 'bash' }) => {
             </pre>
           </div>
 
-          {/* Syntax highlighting legend (appears on hover) */}
-          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gray-800 border border-gray-600 rounded-lg p-3 text-xs z-10 shadow-xl">
+          {/* Syntax highlighting legend (appears on header hover) */}
+          <div className={`absolute top-2 right-2 transition-all duration-300 bg-gray-800 border border-gray-600 rounded-lg p-3 text-xs z-10 shadow-xl ${
+            showSyntaxGuide ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
+          }`}>
             <div className="text-gray-300 font-semibold mb-2">Syntax Guide:</div>
             <div className="space-y-1">
               <div className="flex items-center space-x-2">

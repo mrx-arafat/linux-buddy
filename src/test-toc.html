@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOC Test Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .section {
+            margin: 50px 0;
+            padding: 20px;
+            background: #2a2a2a;
+            border-radius: 8px;
+            min-height: 600px;
+        }
+        .section h2 {
+            color: #4ade80;
+            margin-bottom: 20px;
+        }
+        footer {
+            background: #333;
+            padding: 100px 20px;
+            margin-top: 100px;
+            text-align: center;
+        }
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-info" id="debug">
+        Scroll Position: <span id="scrollPos">0</span><br>
+        Active Section: <span id="activeSection">0</span>
+    </div>
+
+    <h1>TOC Test Page</h1>
+    
+    <div id="section-0-introduction" class="section">
+        <h2>1. Introduction</h2>
+        <p>This is the introduction section. Lorem ipsum dolor sit amet...</p>
+    </div>
+
+    <div id="section-1-getting-started" class="section">
+        <h2>2. Getting Started</h2>
+        <p>Getting started with the content...</p>
+    </div>
+
+    <div id="section-2-basic-concepts" class="section">
+        <h2>3. Basic Concepts</h2>
+        <p>Understanding the basic concepts...</p>
+    </div>
+
+    <div id="section-3-advanced-topics" class="section">
+        <h2>4. Advanced Topics</h2>
+        <p>Diving into advanced topics...</p>
+    </div>
+
+    <div id="section-4-best-practices" class="section">
+        <h2>5. Best Practices</h2>
+        <p>Following best practices...</p>
+    </div>
+
+    <div id="section-5-troubleshooting" class="section">
+        <h2>6. Troubleshooting</h2>
+        <p>Common troubleshooting tips...</p>
+    </div>
+
+    <div id="section-6-performance" class="section">
+        <h2>7. Performance</h2>
+        <p>Optimizing performance...</p>
+    </div>
+
+    <div id="section-7-security" class="section">
+        <h2>8. Security</h2>
+        <p>Security considerations...</p>
+    </div>
+
+    <div id="section-8-deployment" class="section">
+        <h2>9. Deployment</h2>
+        <p>Deployment strategies...</p>
+    </div>
+
+    <div id="section-9-conclusion" class="section">
+        <h2>10. Conclusion</h2>
+        <p>Wrapping up...</p>
+    </div>
+
+    <footer>
+        <h3>Footer</h3>
+        <p>This is the footer content that should trigger TOC hiding.</p>
+    </footer>
+
+    <script>
+        // Debug scroll tracking
+        window.addEventListener('scroll', () => {
+            document.getElementById('scrollPos').textContent = Math.round(window.scrollY);
+            
+            // Simulate active section detection
+            const sections = document.querySelectorAll('.section');
+            const scrollPos = window.scrollY + 100;
+            
+            for (let i = sections.length - 1; i >= 0; i--) {
+                if (sections[i].offsetTop <= scrollPos) {
+                    document.getElementById('activeSection').textContent = i;
+                    break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
